@@ -25,4 +25,8 @@ impl Instance {
             controllers
         })
     }
+
+    pub fn controllers(&self) -> &[Box<dyn Controller>] {
+        self.controllers()
+    }
 }

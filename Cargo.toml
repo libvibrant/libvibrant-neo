@@ -7,6 +7,9 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-x11 = "2.18"
 libXNVCtrl-sys = "1.29"
 thiserror = "1.0"
+
+[dependencies.x11]
+version = "2.18"
+features = ["xrandr"]

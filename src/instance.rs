@@ -7,7 +7,7 @@ use crate::instance::error::Error;
 use crate::instance::xwrapper::Display;
 use std::ffi::CStr;
 
-struct Instance {
+pub struct Instance {
     xcon: Display,
     controllers: Vec<Box<dyn Controller>>
 }

@@ -8,7 +8,7 @@ use crate::instance::xwrapper::Display;
 use std::ffi::CStr;
 
 pub struct Instance {
-    xcon: Display,
+    pub xcon: Display,
     controllers: Vec<Box<dyn Controller>>
 }
 
@@ -27,6 +27,6 @@ impl Instance {
     }
 
     pub fn controllers(&self) -> &[Box<dyn Controller>] {
-        self.controllers()
+        &self.controllers
     }
 }

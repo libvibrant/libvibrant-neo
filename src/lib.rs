@@ -4,6 +4,11 @@ pub mod instance;
 mod tests {
     #[test]
     fn it_works() {
-        assert_eq!(2 + 2, 4);
+        let i = crate::instance::Instance::new().unwrap();
+        let c = i.controllers();
+        for controller in c {
+            println!("{}: {}", controller.get_name(), controller.get_saturation(&i.xcon));
+            controller.set_saturation(&i.xcon, 1.0);
+        }
     }
 }

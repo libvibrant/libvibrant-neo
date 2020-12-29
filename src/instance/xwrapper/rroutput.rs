@@ -48,7 +48,7 @@ impl RROutput {
         unsafe {
             let c_str =
                 CStr::from_bytes_with_nul_unchecked(from_raw_parts((*self.info).name as *const _,
-                                                                   (*self.info).nameLen as usize));
+                                                                   (*self.info).nameLen as usize + 1));
             c_str.to_string_lossy().to_string()
         }
     }

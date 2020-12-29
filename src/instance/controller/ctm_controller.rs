@@ -41,7 +41,7 @@ impl Controller for CTMController {
                 let data_ptr = from_raw_parts(data_ptr, 18);
                 //see the set_saturation function for why this translation is needed
                 for i in (0..18).step_by(2) {
-                    ctm[i] = (data_ptr[i] as u64) << 32 | (data_ptr[i+1] as u64);
+                    ctm[i/2] = (data_ptr[i+1] as u64) << 32 | (data_ptr[i] as u64);
                 }
             }
         };
@@ -50,7 +50,7 @@ impl Controller for CTMController {
         let mut coeffs: [f64; 9] = [0.0; 9];
         for i in 0..9 {
             //we need to clear the sign bit if we want to convert it into a floating point
-            let ctm_num = ctm[i] & (!(1 as u64) << 63);
+            let ctm_num = ctm[i] & !((1 as u64) << 63);
             let mut coeff = (ctm_num as f64)/f64::powi(2.0, 32);
             //recover original sign
             if (ctm[i] & ((1 as u64) << 63)) != 0 {

@@ -1,8 +1,9 @@
 [package]
 name = "libvibrant"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["zee-mzha <zee.mzha@gmail.com>"]
 edition = "2018"
+description = "A library to control screen saturation on X servers"
 license-file = "LICENSE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

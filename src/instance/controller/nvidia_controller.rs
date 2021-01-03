@@ -4,7 +4,7 @@ use crate::instance::controller::{Controller, SATURATION_MIN, SATURATION_MAX, Co
 use libXNVCtrl_sys as nvctrl;
 
 pub struct NvidiaController {
-    output: RROutput,
+    _output: RROutput,
     nvidia_id: c_int,
     name: String
 }
@@ -13,7 +13,7 @@ impl NvidiaController {
     pub fn new(output: RROutput, nvidia_id: c_int) -> NvidiaController {
         NvidiaController {
             name: output.name(),
-            output,
+            _output: output,
             nvidia_id
         }
     }

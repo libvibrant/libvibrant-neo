@@ -1,10 +1,11 @@
-use crate::instance::xwrapper::{RROutput, Display};
+use crate::instance::xwrapper::RROutput;
 use crate::instance::controller::{Controller, SATURATION_MIN, SATURATION_MAX, ControllerBackend};
 use std::os::raw::{c_long, c_ulong};
 use std::slice::from_raw_parts;
 use x11::{xlib, xrandr};
 use std::mem::size_of;
 use x11::xlib::XA_INTEGER;
+use crate::instance::Instance;
 
 pub struct CTMController {
     output: RROutput,
@@ -23,7 +24,8 @@ impl CTMController {
 }
 
 impl Controller for CTMController {
-    fn get_saturation(&self, xcon: &Display) -> f64 {
+    fn get_saturation(&self, instance: &Instance) -> f64 {
+        let xcon = instance.xcon();
         //get the actual color matrix
         let mut ctm: [u64; 9] = [0; 9];
         unsafe {
@@ -32,7 +34,7 @@ impl Controller for CTMController {
             let mut item_count = 0;
             let mut bytes_after: c_ulong = 0;
             let mut data_ptr: *const c_long = std::ptr::null();
-            xrandr::XRRGetOutputProperty(xcon.xcon(), self.output.id(), self.ctm_prop, 0,
+            xrandr::XRRGetOutputProperty(xcon, self.output.id(), self.ctm_prop, 0,
                                          size_of::<c_long>() as c_long * 18, 0, 0, XA_INTEGER,
                                          &mut actual_type as *mut _, &mut actual_format as *mut _,
                                          &mut item_count as *mut _, &mut bytes_after as *mut _,
@@ -63,7 +65,8 @@ impl Controller for CTMController {
         coeffs[0] - coeffs[1]
     }
 
-    fn set_saturation(&self, xcon: &Display, mut saturation: f64) {
+    fn set_saturation(&self, instance: &Instance, mut saturation: f64) {
+        let xcon = instance.xcon();
         saturation = f64::max(saturation, SATURATION_MIN);
         saturation = f64::min(saturation, SATURATION_MAX);
 
@@ -111,10 +114,10 @@ impl Controller for CTMController {
 
         // Now that we have our CTM we can actually set the value
         unsafe {
-            xrandr::XRRChangeOutputProperty(xcon.xcon(), self.output.id(), self.ctm_prop,
+            xrandr::XRRChangeOutputProperty(xcon, self.output.id(), self.ctm_prop,
                                             XA_INTEGER, 32, xlib::PropModeReplace,
                                             padded_ctm.as_ptr() as *const _, 18);
-            xlib::XSync(xcon.xcon(), 0);
+            xlib::XSync(xcon, 0);
         }
     }
 

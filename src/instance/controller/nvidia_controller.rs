@@ -1,7 +1,8 @@
 use std::os::raw::c_int;
-use crate::instance::xwrapper::{RROutput, Display};
+use crate::instance::xwrapper::RROutput;
 use crate::instance::controller::{Controller, SATURATION_MIN, SATURATION_MAX, ControllerBackend};
 use libXNVCtrl_sys as nvctrl;
+use crate::instance::Instance;
 
 pub struct NvidiaController {
     _output: RROutput,
@@ -20,10 +21,11 @@ impl NvidiaController {
 }
 
 impl Controller for NvidiaController {
-    fn get_saturation(&self, xcon: &Display) -> f64 {
+    fn get_saturation(&self, instance: &Instance) -> f64 {
+        let xcon = instance.xcon();
         let mut nv_saturation = 0;
         unsafe {
-            nvctrl::XNVCTRLQueryTargetAttribute(xcon.xcon(),
+            nvctrl::XNVCTRLQueryTargetAttribute(xcon,
                                                 nvctrl::NV_CTRL_TARGET_TYPE_DISPLAY, self.nvidia_id,
                                                 0, nvctrl::NV_CTRL_DIGITAL_VIBRANCE,
                                                 &mut nv_saturation as *mut _);
@@ -37,7 +39,8 @@ impl Controller for NvidiaController {
         }
     }
 
-    fn set_saturation(&self, xcon: &Display, mut saturation: f64) {
+    fn set_saturation(&self, instance: &Instance, mut saturation: f64) {
+        let xcon = instance.xcon();
         let nv_saturation;
 
         saturation = f64::max(saturation, SATURATION_MIN);
@@ -51,7 +54,7 @@ impl Controller for NvidiaController {
         }
 
         unsafe {
-            nvctrl::XNVCTRLSetTargetAttribute(xcon.xcon(), nvctrl::NV_CTRL_TARGET_TYPE_DISPLAY,
+            nvctrl::XNVCTRLSetTargetAttribute(xcon, nvctrl::NV_CTRL_TARGET_TYPE_DISPLAY,
                                               self.nvidia_id, 0, nvctrl::NV_CTRL_DIGITAL_VIBRANCE,
                                               nv_saturation);
         }

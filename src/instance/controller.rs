@@ -7,9 +7,10 @@ use libXNVCtrl_sys as nvctrl;
 use std::os::raw::{c_int, c_uchar};
 use std::slice::from_raw_parts;
 use std::ptr::null_mut;
-pub use crate::instance::controller::nvidia_controller::NvidiaController;
-pub use crate::instance::controller::ctm_controller::CTMController;
+use crate::instance::controller::nvidia_controller::NvidiaController;
+use crate::instance::controller::ctm_controller::CTMController;
 use std::ffi::CStr;
+use crate::instance::Instance;
 
 const SATURATION_MIN: f64 = 0.0;
 const SATURATION_MAX: f64 = 4.0;
@@ -19,6 +20,7 @@ pub enum ControllerBackend {
     CTM
 }
 
+/// Returns a list of displays we can control on the given X server.
 pub fn get_controllers(display: &Display) -> Vec<Box<dyn Controller>> {
     let outputs = RROutput::from_display(display);
     let mut controllers = Vec::<Box<dyn Controller>>::with_capacity(outputs.len());
@@ -92,10 +94,15 @@ pub fn get_controllers(display: &Display) -> Vec<Box<dyn Controller>> {
     controllers
 }
 
+/// Generic interface for dealing with any controller type.
 pub trait Controller {
-    fn get_saturation(&self, xcon: &Display) -> f64;
-    fn set_saturation(&self, xcon: &Display, saturation: f64);
+    /// Returns the saturation of the screen. In the range of [0.0, 4.0].
+    fn get_saturation(&self, instance: &Instance) -> f64;
+    /// Sets the screen saturation. Input is clamped to the range of [0.0, 4.0].
+    fn set_saturation(&self, instance: &Instance, saturation: f64);
 
+    /// Returns the name of the screen.
     fn get_name(&self) -> &str;
+    /// Returns the backend used for this controller.
     fn get_backend(&self) -> ControllerBackend;
 }

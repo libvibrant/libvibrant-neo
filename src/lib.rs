@@ -1,10 +1,15 @@
 pub mod instance;
 
+pub use instance::Instance;
+pub use instance::Controller;
+
 #[cfg(test)]
 mod tests {
+    use crate::Instance;
+
     #[test]
     fn it_works() {
-        let instance = crate::instance::Instance::new().unwrap();
+        let instance = Instance::new().unwrap();
         let controllers = i.controllers();
         for controller in controllers {
             let old_saturation = controller.get_saturation(&instance);

@@ -9,7 +9,7 @@ mod tests {
         for controller in controllers {
             let old_saturation = controller.get_saturation(&instance);
             println!("{} ({}): {}", controller.backend(),
-                     controller.get_name(), controller.get_saturation(&instance));
+                     controller.get_name(), old_saturation);
             controller.set_saturation(&instance, 1.0);
             controller.set_saturation(&instance, old_saturation);
         }

@@ -2,6 +2,7 @@ pub mod instance;
 
 pub use instance::Instance;
 pub use instance::Controller;
+pub use instance::Error;
 
 #[cfg(test)]
 mod tests {

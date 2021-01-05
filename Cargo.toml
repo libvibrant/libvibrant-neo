@@ -1,6 +1,6 @@
 [package]
 name = "libvibrant"
-version = "1.0.2"
+version = "1.0.3"
 authors = ["zee-mzha <zee.mzha@gmail.com>"]
 edition = "2018"
 description = "A library to control screen saturation on X servers"

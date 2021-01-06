@@ -4,6 +4,7 @@ mod xwrapper;
 
 pub use controller::Controller;
 pub use crate::instance::error::Error;
+pub use controller::ControllerBackend;
 use crate::instance::xwrapper::Display;
 use std::ffi::CStr;
 

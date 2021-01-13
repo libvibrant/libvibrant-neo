@@ -5,7 +5,7 @@ authors = ["zee-mzha <zee.mzha@gmail.com>"]
 edition = "2018"
 description = "A library to control screen saturation on X servers"
 license-file = "LICENSE"
-repository = "https://gitlab.com/vibrance/libvibrant"
+repository = "https://github.com/VibrantLinux/libvibrant"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

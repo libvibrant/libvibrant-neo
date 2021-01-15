@@ -5,7 +5,7 @@ authors = ["zee-mzha <zee.mzha@gmail.com>"]
 edition = "2018"
 description = "C bindings for libvibrant, a library to control screen saturation on X servers."
 license-file = "../LICENSE"
-repository = "https://github.com/VibrantLinux/libvibrant"
+repository = "https://github.com/Vibrance-org/libvibrant"
 
 [lib]
 crate-type = ["cdylib"]
@@ -13,4 +13,4 @@ crate-type = ["cdylib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-libvibrant = "1.1.0"
+libvibrant = "1.1.1"

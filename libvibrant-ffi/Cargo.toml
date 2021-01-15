@@ -1,6 +1,6 @@
 [package]
 name = "libvibrant-ffi"
-version = "1.1.0"
+version = "1.1.1"
 authors = ["zee-mzha <zee.mzha@gmail.com>"]
 edition = "2018"
 description = "C bindings for libvibrant, a library to control screen saturation on X servers."

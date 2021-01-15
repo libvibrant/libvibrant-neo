@@ -11,6 +11,8 @@ use crate::instance::controller::nvidia_controller::NvidiaController;
 use crate::instance::controller::ctm_controller::CTMController;
 use std::ffi::CStr;
 use crate::instance::Instance;
+use std::fmt;
+use std::fmt::Formatter;
 
 const SATURATION_MIN: f64 = 0.0;
 const SATURATION_MAX: f64 = 4.0;
@@ -105,4 +107,15 @@ pub trait Controller {
     fn get_name(&self) -> &str;
     /// Returns the backend used for this controller.
     fn get_backend(&self) -> ControllerBackend;
+}
+
+impl fmt::Display for ControllerBackend {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        let str = match self {
+            ControllerBackend::XNVCtrl => "XNVCtrl",
+            ControllerBackend::CTM => "CTM"
+        };
+
+        write!(f, "{}", str)
+    }
 }

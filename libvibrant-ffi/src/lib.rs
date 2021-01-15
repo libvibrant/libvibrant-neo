@@ -1,5 +1,4 @@
 use libvibrant::Instance;
-use libvibrant::Controller;
 use libvibrant::ControllerBackend;
 use std::ptr::null_mut;
 use std::os::raw::{c_uchar, c_char};
@@ -21,24 +20,26 @@ pub enum Backend {
 }
 
 #[no_mangle]
-pub extern "C" fn vibrant_instance_new(mut ret: *mut Instance) -> Error {
+pub extern "C" fn vibrant_instance_new(mut _ret: *mut *const Instance) -> Error {
     let instance = match Instance::new() {
         Ok(i) => i,
         Err(_) => {
-            ret = null_mut();
+            _ret = null_mut();
             return Error::OpenDisplay
         }
     };
 
-    ret = Box::into_raw(Box::new(instance));
+    unsafe{
+        *_ret = Box::into_raw(Box::new(instance));
+    }
     Error::Ok
 }
 
 #[no_mangle]
 pub extern "C" fn vibrant_instance_from_display_name(name: *const c_char,
-                                                        mut ret: *mut Instance) -> Error {
+                                                        mut _ret: *mut *const Instance) -> Error {
     if name.is_null() {
-        ret = null_mut();
+        _ret = null_mut();
         return Error::NullName;
     }
 
@@ -46,12 +47,15 @@ pub extern "C" fn vibrant_instance_from_display_name(name: *const c_char,
     let instance = match Instance::from_display_name(name) {
         Ok(i) => i,
         Err(_) => {
-            ret = null_mut();
+            _ret = null_mut();
             return Error::OpenDisplay
         }
     };
-    ret = Box::into_raw(Box::new(instance));
-    return Error::Ok;
+
+    unsafe {
+        *_ret = Box::into_raw(Box::new(instance));
+    }
+    Error::Ok
 }
 
 #[no_mangle]
